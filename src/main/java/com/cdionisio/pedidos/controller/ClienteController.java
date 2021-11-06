@@ -1,5 +1,7 @@
 package com.cdionisio.pedidos.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,9 +21,12 @@ import com.cdionisio.pedidos.service.IClienteService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/clientes")
 public class ClienteController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ClienteController.class);
 	
 	@Autowired
 	private IClienteService service;
@@ -36,36 +41,29 @@ public class ClienteController {
 	}
 	
 	@GetMapping("/{id}")
-	public Mono<ResponseEntity<Mono<Cliente>>> getById(@PathVariable String id) {
-		return Mono.just(
-				ResponseEntity.ok()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body(service.getById(id)));
+	public Mono<ResponseEntity<Cliente>> getById(@PathVariable String id) {
+		return service.getById(id)
+				.flatMap( response -> Mono.just(new ResponseEntity<>(response, HttpStatus.OK)))
+				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 	
 	@PostMapping
-	public Mono<ResponseEntity<Mono<Cliente>>> insertar(@RequestBody Cliente cliente) {
-		return Mono.just(
-				ResponseEntity.ok()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body(service.insert(cliente)));
+	public Mono<ResponseEntity<Void>> insertar(@Valid @RequestBody Cliente cliente) {
+		return service.insert(cliente)
+				.flatMap(res -> Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
+				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
 	}
 	
 	@PutMapping
-	public Mono<ResponseEntity<Mono<Cliente>>> actualizar(@RequestBody Cliente cliente) {
-		
+	public Mono<ResponseEntity<Void>> actualizar(@Valid @RequestBody Cliente cliente) {
 		Mono<Cliente> clienteDB = service.getById(cliente.getIdCliente());
 		
-		if (clienteDB == null) {
-			System.out.println("Cliente no registrado en la BD!!");
-			return null;
-		}
-		
-		
-		return Mono.just(
-				ResponseEntity.ok()
-				.contentType(MediaType.APPLICATION_JSON)
-				.body(service.update(cliente)));
+		return clienteDB.flatMap(res -> {
+					service.update(cliente);
+					LOGGER.info("Cliente Actualizado!!!");
+					return Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT));
+				})
+				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 		
 	}
 	

@@ -4,21 +4,28 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 @Document(collection = "clientes")
 public class Cliente {
 	
 	@Id
 	private String idCliente;
-	
+
+	@NotEmpty(message = "El campo no debe ir vacio")
 	@Field(name = "nombres")
 	private String nombres;
 	
 	@Field(name = "apellidos")
 	private String apellidos;
-	
+
+	@Size(min = 8, max = 8, message = "Debe tener 8 caracteres")
 	@Field(name = "dni")
 	private String dni; 
-	
+
+	@Email(message = "Formato email invalido")
 	@Field(name = "correo")
 	private String correo;
 
