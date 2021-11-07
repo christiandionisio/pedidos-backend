@@ -9,5 +9,5 @@ public interface IProductoService {
     Mono<Producto> findById(String id);
     Mono<Producto> registerProducto(Producto producto);
     Mono<Producto> updateProducto(Producto producto);
-    Mono<Void> delete(Producto producto);
+    Mono<Void> delete(String id);
 }

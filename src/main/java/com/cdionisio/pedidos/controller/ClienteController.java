@@ -58,11 +58,8 @@ public class ClienteController {
 	public Mono<ResponseEntity<Void>> actualizar(@Valid @RequestBody Cliente cliente) {
 		Mono<Cliente> clienteDB = service.getById(cliente.getIdCliente());
 		
-		return clienteDB.flatMap(res -> {
-					service.update(cliente);
-					LOGGER.info("Cliente Actualizado!!!");
-					return Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT));
-				})
+		return clienteDB.flatMap(res -> service.update(cliente))
+				.map(res -> new ResponseEntity<Void>(HttpStatus.NO_CONTENT))
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 		
 	}
@@ -71,7 +68,8 @@ public class ClienteController {
 	public Mono<ResponseEntity<Void>> eliminar(@PathVariable String id) {
 		return service.getById(id)
 				.flatMap(res -> service.delete(res.getIdCliente())
-								.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
+								.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
+				)
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 

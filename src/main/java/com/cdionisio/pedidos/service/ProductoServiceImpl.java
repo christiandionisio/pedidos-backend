@@ -30,11 +30,11 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     public Mono<Producto> updateProducto(Producto producto) {
-        return productoRepo.insert(producto);
+        return productoRepo.save(producto);
     }
 
     @Override
-    public Mono<Void> delete(Producto producto) {
-        return productoRepo.delete(producto);
+    public Mono<Void> delete(String id) {
+        return productoRepo.deleteById(id);
     }
 }
