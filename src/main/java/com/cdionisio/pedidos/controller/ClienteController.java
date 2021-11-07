@@ -72,7 +72,7 @@ public class ClienteController {
 		return service.getById(id)
 				.flatMap(res -> service.delete(res.getIdCliente())
 								.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT))))
-				.defaultIfEmpty(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
+				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 }

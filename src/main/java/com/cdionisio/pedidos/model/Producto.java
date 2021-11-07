@@ -4,12 +4,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @Document(collection = "productos")
 public class Producto {
 	
 	@Id
-	private String idProducto;
-	
+	private String id;
+
+	@NotEmpty(message = "{notempty.nombre}")
 	@Field(name = "nombre")
 	private String nombre;
 	
@@ -18,7 +22,8 @@ public class Producto {
 	
 	@Field(name = "tipo")
 	private String tipo;
-	
+
+	@NotNull(message = "{notnull.precio}")
 	@Field(name = "precio")
 	private Double precio;
 	
