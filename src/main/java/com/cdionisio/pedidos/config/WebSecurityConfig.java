@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/clientes/**").permitAll()
+                .pathMatchers("/productos/**").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }
