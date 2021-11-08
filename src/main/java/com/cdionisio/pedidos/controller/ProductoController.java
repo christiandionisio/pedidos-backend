@@ -1,8 +1,11 @@
 package com.cdionisio.pedidos.controller;
 
 import com.cdionisio.pedidos.model.Producto;
+import com.cdionisio.pedidos.pagination.PageSupport;
 import com.cdionisio.pedidos.service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/productos")
@@ -53,6 +57,16 @@ public class ProductoController {
                 .flatMap(res -> productoService.delete(id)
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
                 )
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/pageable")
+    public Mono<ResponseEntity<PageSupport<Producto>>> listProductsPageable
+            (@RequestParam(value = "size", defaultValue = "10") Integer size,
+             @RequestParam(value = "page", defaultValue = "0") Integer page) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        return productoService.findPageableProductos(pageRequest)
+                .map(res -> new ResponseEntity<>(res, HttpStatus.OK))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
