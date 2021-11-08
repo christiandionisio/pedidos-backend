@@ -1,6 +1,7 @@
 package com.cdionisio.pedidos.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -27,7 +28,21 @@ public class Cliente {
 
 	@Email(message = "Formato email invalido")
 	@Field(name = "correo")
+	@Indexed(unique = true)
 	private String correo;
+
+	@NotEmpty(message = "Contraseña obligatoria")
+	@Size(min = 6, message = "La contraseña debe tener 6 o más caracteres")
+	@Field(name = "password")
+	private String password;
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public String getIdCliente() {
 		return idCliente;
