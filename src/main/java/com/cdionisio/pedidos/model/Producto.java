@@ -33,6 +33,17 @@ public class Producto {
 	@Field(name = "fecha_registro")
 	private String fechaRegistro;
 
+	@Field(name = "urlFoto")
+	private String urlFoto;
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
 	public String getId() {
 		return id;
 	}

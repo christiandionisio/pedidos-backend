@@ -55,6 +55,18 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<!-- Cloudinary Subir Fotos https://cloudinary.com/documentation/java_integration#overview -->
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+			<version>1.26.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-taglib</artifactId>
+			<version>1.26.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
