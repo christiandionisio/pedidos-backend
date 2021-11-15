@@ -8,53 +8,40 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Factura {
 	
 	@Id
-	private String idFactura;
+	private String id;
 	
-	@Field(name = "cliente")
-	private Cliente cliente;
+	@Field(name = "idCliente")
+	private String idCliente;
 	
-	@Field(name = "mesa")
-	private Mesa mesa;
+//	@Field(name = "mesa")
+//	private Mesa mesa;
 	
-	@Field(name = "empleado")
-	private Empleado empleado;
+//	@Field(name = "empleado")
+//	private Empleado empleado;
 	
 	@Field(name = "total")
 	private Double total;
 	
-	@Field(name = "fecha_emision")
+	@Field(name = "fechaEmision")
 	private String fechaEmision;
 
-	public String getIdFactura() {
-		return idFactura;
+	@Field(name = "estado")
+	private String estado;
+
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setIdFactura(String idFactura) {
-		this.idFactura = idFactura;
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
+	public String getId() {
+		return id;
 	}
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-
-	public Mesa getMesa() {
-		return mesa;
-	}
-
-	public void setMesa(Mesa mesa) {
-		this.mesa = mesa;
-	}
-
-	public Empleado getEmpleado() {
-		return empleado;
-	}
-
-	public void setEmpleado(Empleado empleado) {
-		this.empleado = empleado;
+	public void setId(String idFactura) {
+		this.id = idFactura;
 	}
 
 	public Double getTotal() {
@@ -73,4 +60,11 @@ public class Factura {
 		this.fechaEmision = fechaEmision;
 	}
 
+	public String getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(String idCliente) {
+		this.idCliente = idCliente;
+	}
 }

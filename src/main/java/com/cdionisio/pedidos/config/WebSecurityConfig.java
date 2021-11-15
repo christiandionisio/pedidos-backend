@@ -48,6 +48,8 @@ public class WebSecurityConfig {
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/clientes/**").permitAll()
                 .pathMatchers("/productos/**").permitAll()
+                .pathMatchers("/facturas/**").permitAll()
+                .pathMatchers("/pedidos/**").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }

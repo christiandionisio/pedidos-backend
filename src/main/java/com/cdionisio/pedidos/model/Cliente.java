@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 public class Cliente {
 	
 	@Id
-	private String idCliente;
+	private String id;
 
 	@NotEmpty(message = "El campo no debe ir vacio")
 	@Field(name = "nombres")
@@ -36,20 +36,20 @@ public class Cliente {
 	@Field(name = "password")
 	private String password;
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getIdCliente() {
-		return idCliente;
-	}
-
-	public void setIdCliente(String id_cliente) {
-		this.idCliente = id_cliente;
 	}
 
 	public String getNombres() {

@@ -8,13 +8,13 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class Pedido {
 	
 	@Id
-	private String idPedido;
+	private String id;
 	
-	@Field(name = "factura")
-	private Factura factura;
+	@Field(name = "id_factura")
+	private String idFactura;
 	
-	@Field(name = "producto")
-	private Producto producto;
+	@Field(name = "id_producto")
+	private String idProducto;
 	
 	@Field(name = "cantidad")
 	private Integer cantidad;
@@ -25,28 +25,28 @@ public class Pedido {
 	@Field(name = "fecha_atendido")
 	private String fechaAtendido;
 
-	public String getIdPedido() {
-		return idPedido;
+	public String getId() {
+		return id;
 	}
 
-	public void setIdPedido(String idPedido) {
-		this.idPedido = idPedido;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public Factura getFactura() {
-		return factura;
+	public String getIdFactura() {
+		return idFactura;
 	}
 
-	public void setFactura(Factura factura) {
-		this.factura = factura;
+	public void setIdFactura(String idFactura) {
+		this.idFactura = idFactura;
 	}
 
-	public Producto getProducto() {
-		return producto;
+	public String getIdProducto() {
+		return idProducto;
 	}
 
-	public void setProducto(Producto producto) {
-		this.producto = producto;
+	public void setIdProducto(String idProducto) {
+		this.idProducto = idProducto;
 	}
 
 	public Integer getCantidad() {

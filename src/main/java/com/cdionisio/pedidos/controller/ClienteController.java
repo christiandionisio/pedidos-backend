@@ -56,7 +56,7 @@ public class ClienteController {
 	
 	@PutMapping
 	public Mono<ResponseEntity<Void>> actualizar(@Valid @RequestBody Cliente cliente) {
-		Mono<Cliente> clienteDB = service.getById(cliente.getIdCliente());
+		Mono<Cliente> clienteDB = service.getById(cliente.getId());
 		
 		return clienteDB.flatMap(res -> service.update(cliente))
 				.map(res -> new ResponseEntity<Void>(HttpStatus.NO_CONTENT))
@@ -67,7 +67,7 @@ public class ClienteController {
 	@DeleteMapping("/{id}")
 	public Mono<ResponseEntity<Void>> eliminar(@PathVariable String id) {
 		return service.getById(id)
-				.flatMap(res -> service.delete(res.getIdCliente())
+				.flatMap(res -> service.delete(res.getId())
 								.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
 				)
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
