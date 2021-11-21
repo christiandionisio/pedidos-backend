@@ -35,10 +35,8 @@ public class ProvinciaController {
     }
 
     @GetMapping("/byIdDepartamento/{id}")
-    public Flux<ResponseEntity<Provincia>> getProvinciaByIdDepartamento(@PathVariable String id) {
-        return service.findByIdDepartament(id)
-                .flatMap(res -> Flux.just(new ResponseEntity<>(res, HttpStatus.OK)))
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Mono<ResponseEntity<Flux<Provincia>>> getProvinciaByIdDepartamento(@PathVariable String id) {
+        return Mono.just(ResponseEntity.ok(service.findByIdDepartament(id)));
     }
 
     @PostMapping

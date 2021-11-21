@@ -4,9 +4,11 @@ import com.cdionisio.pedidos.model.ubicacion.Provincia;
 import com.cdionisio.pedidos.repo.IProvinciaRepo;
 import com.cdionisio.pedidos.service.interfaces.IProvinciaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Service
 public class ProvinciaServiceImpl implements IProvinciaService {
 
     @Autowired
@@ -39,6 +41,6 @@ public class ProvinciaServiceImpl implements IProvinciaService {
 
     @Override
     public Flux<Provincia> findByIdDepartament(String idDepartamento) {
-        return repo.findByIdDepartamento(idDepartamento);
+        return repo.obtenerPorIdDepartamento(idDepartamento);
     }
 }

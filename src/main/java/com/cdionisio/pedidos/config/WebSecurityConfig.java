@@ -51,6 +51,8 @@ public class WebSecurityConfig {
                 .pathMatchers("/facturas/**").permitAll()
                 .pathMatchers("/pedidos/**").permitAll()
                 .pathMatchers("/tarjetas/**").permitAll()
+                .pathMatchers("/departamentos/**").permitAll()
+                .pathMatchers("/provincias/**").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }
