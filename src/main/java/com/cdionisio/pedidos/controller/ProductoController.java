@@ -37,12 +37,12 @@ public class ProductoController {
 
     @GetMapping
     public Mono<ResponseEntity<Flux<Producto>>> listProductos() {
-        return Mono.just(ResponseEntity.ok(productoService.findProductos()));
+        return Mono.just(ResponseEntity.ok(productoService.list()));
     }
 
     @GetMapping("/{id}")
     public Mono<ResponseEntity<Producto>> getProductoById(@PathVariable String id) {
-        return productoService.findById(id)
+        return productoService.getById(id)
                 .flatMap(res -> Mono.just(new ResponseEntity<>(res, HttpStatus.OK)))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -50,22 +50,22 @@ public class ProductoController {
     @PostMapping
     public Mono<ResponseEntity<Void>> insertProduct(@Valid @RequestBody Producto producto) {
         producto.setFechaRegistro(LocalDate.now().toString());
-        return productoService.registerProducto(producto)
+        return productoService.insert(producto)
                 .flatMap(res -> Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
     @PutMapping
     public Mono<ResponseEntity<Void>> updateProduct(@Valid @RequestBody Producto producto) {
-        return productoService.findById(producto.getId())
-                .flatMap(res -> productoService.updateProducto(producto))
+        return productoService.getById(producto.getId())
+                .flatMap(res -> productoService.update(producto))
                 .map(res -> new ResponseEntity<Void>(HttpStatus.NO_CONTENT))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
     public Mono<ResponseEntity<Void>> deleteProduct(@PathVariable String id) {
-        return productoService.findById(id)
+        return productoService.getById(id)
                 .flatMap(res -> productoService.delete(id)
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
                 )
@@ -87,7 +87,7 @@ public class ProductoController {
 
         Cloudinary cloudinary = Singleton.getCloudinary();
 
-        return productoService.findById(id)
+        return productoService.getById(id)
                 .flatMap(c -> {
                     LOGGER.info("Iniciando proceso de subida de imagen");
                     try {
@@ -102,7 +102,7 @@ public class ProductoController {
                         String url=json.getString("url");
 
                         c.setUrlFoto(url);
-                        return productoService.updateProducto(c).then(Mono.just(ResponseEntity.ok().body(c)));
+                        return productoService.update(c).then(Mono.just(ResponseEntity.ok().body(c)));
                     }catch(Exception e) {
                         e.printStackTrace();
                     }

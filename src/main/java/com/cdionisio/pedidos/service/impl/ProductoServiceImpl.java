@@ -2,6 +2,7 @@ package com.cdionisio.pedidos.service.impl;
 
 import com.cdionisio.pedidos.model.Producto;
 import com.cdionisio.pedidos.pagination.PageSupport;
+import com.cdionisio.pedidos.repo.IGenericRepo;
 import com.cdionisio.pedidos.repo.IProductoRepo;
 import com.cdionisio.pedidos.service.interfaces.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,35 +14,10 @@ import reactor.core.publisher.Mono;
 import java.util.stream.Collectors;
 
 @Service
-public class ProductoServiceImpl implements IProductoService {
+public class ProductoServiceImpl extends CrudGenericServiceImpl<Producto> implements IProductoService {
 
     @Autowired
     private IProductoRepo productoRepo;
-
-    @Override
-    public Flux<Producto> findProductos() {
-        return productoRepo.findAll();
-    }
-
-    @Override
-    public Mono<Producto> findById(String id) {
-        return productoRepo.findById(id);
-    }
-
-    @Override
-    public Mono<Producto> registerProducto(Producto producto) {
-        return productoRepo.insert(producto);
-    }
-
-    @Override
-    public Mono<Producto> updateProducto(Producto producto) {
-        return productoRepo.save(producto);
-    }
-
-    @Override
-    public Mono<Void> delete(String id) {
-        return productoRepo.deleteById(id);
-    }
 
     @Override
     public Mono<PageSupport<Producto>> findPageableProductos(Pageable page) {
@@ -57,5 +33,10 @@ public class ProductoServiceImpl implements IProductoService {
                             list.size()
                         )
                 );
+    }
+
+    @Override
+    protected IGenericRepo<Producto> getRepo() {
+        return productoRepo;
     }
 }

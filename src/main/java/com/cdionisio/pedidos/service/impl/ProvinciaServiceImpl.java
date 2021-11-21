@@ -1,46 +1,28 @@
 package com.cdionisio.pedidos.service.impl;
 
 import com.cdionisio.pedidos.model.ubicacion.Provincia;
+import com.cdionisio.pedidos.repo.IGenericRepo;
 import com.cdionisio.pedidos.repo.IProvinciaRepo;
 import com.cdionisio.pedidos.service.interfaces.IProvinciaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 @Service
-public class ProvinciaServiceImpl implements IProvinciaService {
+public class ProvinciaServiceImpl extends CrudGenericServiceImpl<Provincia> implements IProvinciaService {
 
     @Autowired
     private IProvinciaRepo repo;
 
-    @Override
-    public Flux<Provincia> list() {
-        return repo.findAll();
-    }
 
-    @Override
-    public Mono<Provincia> getById(String id) {
-        return repo.findById(id);
-    }
-
-    @Override
-    public Mono<Provincia> insert(Provincia provincia) {
-        return repo.save(provincia);
-    }
-
-    @Override
-    public Mono<Provincia> update(Provincia provincia) {
-        return repo.save(provincia);
-    }
-
-    @Override
-    public Mono<Void> delete(String id) {
-        return repo.deleteById(id);
-    }
 
     @Override
     public Flux<Provincia> findByIdDepartament(String idDepartamento) {
         return repo.obtenerPorIdDepartamento(idDepartamento);
+    }
+
+    @Override
+    protected IGenericRepo<Provincia> getRepo() {
+        return repo;
     }
 }
