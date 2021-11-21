@@ -1,7 +1,7 @@
 package com.cdionisio.pedidos.controller;
 
 import com.cdionisio.pedidos.model.Factura;
-import com.cdionisio.pedidos.service.IFacturaService;
+import com.cdionisio.pedidos.service.interfaces.IFacturaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

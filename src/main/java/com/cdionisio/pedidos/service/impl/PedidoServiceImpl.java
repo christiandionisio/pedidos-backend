@@ -1,14 +1,15 @@
-package com.cdionisio.pedidos.service;
+package com.cdionisio.pedidos.service.impl;
 
 import com.cdionisio.pedidos.model.Pedido;
 import com.cdionisio.pedidos.repo.IPedidoRepo;
+import com.cdionisio.pedidos.service.interfaces.IPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class PedidoServiceImpl implements IPedidoService{
+public class PedidoServiceImpl implements IPedidoService {
 
     @Autowired
     private IPedidoRepo repo;

@@ -1,4 +1,4 @@
-package com.cdionisio.pedidos.service;
+package com.cdionisio.pedidos.service.interfaces;
 
 import com.cdionisio.pedidos.model.Producto;
 import com.cdionisio.pedidos.pagination.PageSupport;

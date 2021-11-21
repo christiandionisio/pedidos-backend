@@ -50,6 +50,7 @@ public class WebSecurityConfig {
                 .pathMatchers("/productos/**").permitAll()
                 .pathMatchers("/facturas/**").permitAll()
                 .pathMatchers("/pedidos/**").permitAll()
+                .pathMatchers("/tarjetas/**").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }

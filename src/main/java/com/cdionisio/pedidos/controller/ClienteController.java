@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.cdionisio.pedidos.model.Cliente;
-import com.cdionisio.pedidos.service.IClienteService;
+import com.cdionisio.pedidos.service.interfaces.IClienteService;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

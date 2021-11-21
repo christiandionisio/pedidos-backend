@@ -2,7 +2,7 @@ package com.cdionisio.pedidos.controller;
 
 import com.cdionisio.pedidos.model.Producto;
 import com.cdionisio.pedidos.pagination.PageSupport;
-import com.cdionisio.pedidos.service.IProductoService;
+import com.cdionisio.pedidos.service.interfaces.IProductoService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Singleton;
 import com.cloudinary.utils.ObjectUtils;

@@ -1,7 +1,8 @@
-package com.cdionisio.pedidos.service;
+package com.cdionisio.pedidos.service.impl;
 
 import com.cdionisio.pedidos.model.Factura;
 import com.cdionisio.pedidos.repo.IFacturaRepo;
+import com.cdionisio.pedidos.service.interfaces.IFacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
