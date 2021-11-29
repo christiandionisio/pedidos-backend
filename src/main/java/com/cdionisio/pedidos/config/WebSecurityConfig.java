@@ -54,6 +54,7 @@ public class WebSecurityConfig {
                 .pathMatchers("/departamentos/**").permitAll()
                 .pathMatchers("/provincias/**").permitAll()
                 .pathMatchers("/distritos/**").permitAll()
+                .pathMatchers("/direcciones/**").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }
