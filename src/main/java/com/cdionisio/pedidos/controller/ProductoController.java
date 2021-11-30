@@ -28,6 +28,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/productos")
+@PreAuthorize("hasRole('ADMIN')")
 public class ProductoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ProductoController.class);
@@ -37,12 +38,13 @@ public class ProductoController {
     private IProductoService productoService;
 
     @GetMapping
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<Flux<Producto>>> listProductos() {
         return Mono.just(ResponseEntity.ok(productoService.list()));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<Producto>> getProductoById(@PathVariable String id) {
         return productoService.getById(id)
                 .flatMap(res -> Mono.just(new ResponseEntity<>(res, HttpStatus.OK)))
@@ -75,6 +77,7 @@ public class ProductoController {
     }
 
     @GetMapping("/pageable")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<PageSupport<Producto>>> listProductsPageable
             (@RequestParam(value = "size", defaultValue = "10") Integer size,
              @RequestParam(value = "page", defaultValue = "0") Integer page) {
@@ -85,6 +88,7 @@ public class ProductoController {
     }
 
     @PostMapping("subir/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<Producto>> subirImagen(@PathVariable String id, @RequestPart FilePart file){
 
         Cloudinary cloudinary = Singleton.getCloudinary();

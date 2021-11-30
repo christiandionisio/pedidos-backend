@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/distritos")
+@PreAuthorize("hasRole('ADMIN')")
 public class DistritoController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DistritoController.class);
@@ -28,6 +30,7 @@ public class DistritoController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<Distrito>> getDistritoById(@PathVariable String id) {
         return service.getById(id)
                 .flatMap(res -> Mono.just(new ResponseEntity<>(res, HttpStatus.OK)))
@@ -35,6 +38,7 @@ public class DistritoController {
     }
 
     @GetMapping("/byIdDepartamento/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<Flux<Distrito>>> getDistritoByIdDepartamento(@PathVariable String id) {
         return Mono.just(ResponseEntity.ok(service.findByIdProvincia(id)));
     }

@@ -18,11 +18,9 @@ import java.util.List;
 
 @Service
 public class ClienteServiceImpl extends CrudGenericServiceImpl<Cliente> implements IClienteService {
-	
-	
+
 	@Autowired
 	private IClienteRepo repo;
-
 
 	@Override
 	protected IGenericRepo<Cliente> getRepo() {
@@ -34,7 +32,7 @@ public class ClienteServiceImpl extends CrudGenericServiceImpl<Cliente> implemen
 		Mono<Cliente> monoCliente = repo.buscarPorCorreo(correo);
 
 		List<Role> roles = new ArrayList<Role>();
-		roles.add(Role.ROLE_ADMIN);
+		roles.add(Role.ROLE_USER);
 
 		return monoCliente.flatMap(u -> Mono.just(new User(u.getCorreo(), u.getPassword(), true, roles)));
 	}

@@ -7,6 +7,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/clientes")
+@PreAuthorize("hasRole('ADMIN')")
 public class ClienteController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ClienteController.class);
 	
@@ -38,6 +40,7 @@ public class ClienteController {
 	}
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 	public Mono<ResponseEntity<Cliente>> getById(@PathVariable String id) {
 		return service.getById(id)
 				.flatMap( response -> Mono.just(new ResponseEntity<>(response, HttpStatus.OK)))

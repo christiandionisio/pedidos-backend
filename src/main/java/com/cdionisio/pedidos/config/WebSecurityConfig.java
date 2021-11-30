@@ -52,15 +52,6 @@ public class WebSecurityConfig {
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 .pathMatchers("/login").permitAll()
-                .pathMatchers("/clientes/**").permitAll()
-//                .pathMatchers("/productos/**").permitAll()
-                .pathMatchers("/facturas/**").permitAll()
-                .pathMatchers("/pedidos/**").permitAll()
-                .pathMatchers("/tarjetas/**").permitAll()
-                .pathMatchers("/departamentos/**").permitAll()
-                .pathMatchers("/provincias/**").permitAll()
-                .pathMatchers("/distritos/**").permitAll()
-                .pathMatchers("/direcciones/**").permitAll()
                 .anyExchange().authenticated()
                 .and().build();
     }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/direcciones")
+@PreAuthorize("hasRole('ADMIN')")
 public class DireccionController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DireccionController.class);
@@ -23,11 +25,13 @@ public class DireccionController {
     private IDireccionService service;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<Flux<Direccion>>> listDireccion() {
         return Mono.just(ResponseEntity.ok(service.list()));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     public Mono<ResponseEntity<Direccion>> getDireccionById(@PathVariable String id) {
         return service.getById(id)
                 .flatMap(res -> Mono.just(new ResponseEntity<>(res, HttpStatus.OK)))
