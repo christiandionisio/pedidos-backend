@@ -51,7 +51,6 @@ public class ClienteController {
 	public Mono<ResponseEntity<Void>> insertar(@Valid @RequestBody Cliente cliente) {
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
-		LOGGER.info("Password encoded: {}", cliente.getPassword());
 		return service.insert(cliente)
 				.flatMap(res -> Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
