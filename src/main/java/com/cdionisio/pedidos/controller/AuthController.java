@@ -4,17 +4,17 @@ import com.cdionisio.pedidos.model.Cliente;
 import com.cdionisio.pedidos.security.*;
 import com.cdionisio.pedidos.service.interfaces.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -52,6 +52,13 @@ public class AuthController {
                     return Mono.just(new ResponseEntity<AuthResponse>(new AuthResponse(token, expiracion), HttpStatus.OK));
                 })
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity handleDuplicateKeyException(DuplicateKeyException ex) {
+        Map<String, Object> mapResponse = new HashMap<>();
+        mapResponse.put("mensaje", "El correo ya existe");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(mapResponse);
     }
 }
 
