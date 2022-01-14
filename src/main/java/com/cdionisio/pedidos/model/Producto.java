@@ -36,6 +36,9 @@ public class Producto {
 	@Field(name = "urlFoto")
 	private String urlFoto;
 
+	@Field(name = "publicId")
+	private String publicId;
+
 	public String getUrlFoto() {
 		return urlFoto;
 	}
@@ -98,5 +101,13 @@ public class Producto {
 
 	public void setFechaRegistro(String fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
+	}
+
+	public String getPublicId() {
+		return publicId;
+	}
+
+	public void setPublicId(String publicId) {
+		this.publicId = publicId;
 	}
 }
