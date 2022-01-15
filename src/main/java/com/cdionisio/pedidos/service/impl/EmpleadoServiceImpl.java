@@ -23,7 +23,7 @@ public class EmpleadoServiceImpl extends CrudGenericServiceImpl<Empleado> implem
     @Override
     public Mono<User> buscarPorCorreo(String correo) {
         Mono<Empleado> monoEmpleado = repo.buscarPorCorreo(correo);
-        return monoEmpleado.flatMap(u -> Mono.just(new User(u.getCorreo(), u.getPassword(), true, u.getRole())));
+        return monoEmpleado.flatMap(u -> Mono.just(new User(u.getCorreo(), u.getPassword(), true, u.getRoleParsed())));
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -49,6 +50,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public Mono<ResponseEntity<AuthResponse>> register(@RequestBody Cliente cliente){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
         return clienteService.insert(cliente)
                 .flatMap(res -> {
                     User userDetails = new User(res.getCorreo(), res.getPassword(), true, Arrays.asList(Role.ROLE_USER));
@@ -77,9 +80,11 @@ public class AuthController {
 
     @PostMapping("/register-employee")
     public Mono<ResponseEntity<AuthResponse>> registerEmpleado(@RequestBody Empleado empleado){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        empleado.setPassword(passwordEncoder.encode(empleado.getPassword()));
         return empleadoService.insert(empleado)
                 .flatMap(res -> {
-                    User userDetails = new User(res.getCorreo(), res.getPassword(), true, res.getRole());
+                    User userDetails = new User(res.getCorreo(), res.getPassword(), true, res.getRoleParsed());
                     String token = jwtUtil.generateToken(userDetails);
                     Date expiracion = jwtUtil.getExpirationDateFromToken(token);
                     return Mono.just(new ResponseEntity<AuthResponse>(new AuthResponse(token, expiracion), HttpStatus.OK));
