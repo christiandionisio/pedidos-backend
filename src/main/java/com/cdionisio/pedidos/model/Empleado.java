@@ -1,8 +1,11 @@
 package com.cdionisio.pedidos.model;
 
+import com.cdionisio.pedidos.security.Role;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.List;
 
 @Document(collection = "empleados")
 public class Empleado {
@@ -21,12 +24,12 @@ public class Empleado {
 	
 	@Field(name = "correo")
 	private String correo;
-	
+
+	@Field(name = "role")
+	private List<Role> roles;
+
 	@Field(name = "fecha_nacimiento")
 	private String fechaNacimiento;
-	
-	@Field(name = "usuario")
-	private String usuario;
 	
 	@Field(name = "password")
 	private String password;
@@ -79,14 +82,6 @@ public class Empleado {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
 	public String getPassword() {
 		return password;
 	}
@@ -94,6 +89,12 @@ public class Empleado {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 
+	public List<Role> getRole() {
+		return roles;
+	}
+
+	public void setRole(List<Role> roles) {
+		this.roles = roles;
+	}
 }

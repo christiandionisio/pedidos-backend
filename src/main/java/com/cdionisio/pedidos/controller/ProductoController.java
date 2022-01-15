@@ -32,13 +32,13 @@ public class ProductoController {
     private IProductoService productoService;
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<Flux<Producto>>> listProductos() {
         return Mono.just(ResponseEntity.ok(productoService.list()));
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<Producto>> getProductoById(@PathVariable String id) {
         return productoService.getById(id)
                 .flatMap(res -> Mono.just(new ResponseEntity<>(res, HttpStatus.OK)))
@@ -46,7 +46,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<?>> insertProduct(@Valid @RequestBody Producto producto) {
         producto.setFechaRegistro(LocalDate.now().toString());
         return productoService.insert(producto)
@@ -63,7 +63,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<Void>> deleteProduct(@PathVariable String id) {
         return productoService.getById(id)
                 .flatMap(res -> productoService.delete(id)
@@ -73,7 +73,7 @@ public class ProductoController {
     }
 
     @GetMapping("/pageable")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<PageSupport<Producto>>> listProductsPageable
             (@RequestParam(value = "size", defaultValue = "10") Integer size,
              @RequestParam(value = "page", defaultValue = "0") Integer page) {
@@ -85,7 +85,7 @@ public class ProductoController {
 
     @PostMapping( value = "subir/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<Producto>> subirImagen(@PathVariable String id, @RequestPart("file") FilePart file) {
         return productoService.getById(id)
                 .flatMap(c -> {
@@ -108,7 +108,7 @@ public class ProductoController {
 
     @PutMapping( value = "update-image/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<Producto>> updateImage(@PathVariable String id, @RequestPart("file") FilePart file) {
         return productoService.getById(id)
                 .flatMap(c -> {
@@ -140,7 +140,7 @@ public class ProductoController {
     }
 
     @PostMapping( value = "eliminar-imagen/{id}")
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<Producto>> eliminarImagen(@PathVariable String id) {
         return productoService.getById(id)
                 .flatMap(c -> {
