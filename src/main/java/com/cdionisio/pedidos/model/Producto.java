@@ -110,4 +110,19 @@ public class Producto {
 	public void setPublicId(String publicId) {
 		this.publicId = publicId;
 	}
+
+	@Override
+	public String toString() {
+		return "Producto{" +
+				"id='" + id + '\'' +
+				", nombre='" + nombre + '\'' +
+				", descripcion='" + descripcion + '\'' +
+				", tipo='" + tipo + '\'' +
+				", precio=" + precio +
+				", stock=" + stock +
+				", fechaRegistro='" + fechaRegistro + '\'' +
+				", urlFoto='" + urlFoto + '\'' +
+				", publicId='" + publicId + '\'' +
+				'}';
+	}
 }

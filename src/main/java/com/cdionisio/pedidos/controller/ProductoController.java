@@ -115,7 +115,7 @@ public class ProductoController {
                     LOGGER.info("Iniciando proceso de update de imagen");
                     try {
 
-                        if (!c.getPublicId().equals("")) {
+                        if (c.getPublicId() != null && !c.getPublicId().equals("")) {
                             LOGGER.info("Delete image");
                             JSONObject jsonDeleteResponse = productoService.deleteImageToCloudinary(c.getPublicId());
                             if (!jsonDeleteResponse.getString("result").equalsIgnoreCase("ok")) {
@@ -124,6 +124,7 @@ public class ProductoController {
                             }
                         }
 
+                        LOGGER.info("Upload image");
                         JSONObject jsonUploadResponse = productoService.uploadImageToCloudinary(file);
                         LOGGER.debug("Response from Cloudinary: {}", jsonUploadResponse.toString());
 
