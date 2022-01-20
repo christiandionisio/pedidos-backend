@@ -9,11 +9,13 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.Singleton;
 import com.cloudinary.utils.ObjectUtils;
 import org.cloudinary.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
@@ -25,7 +27,10 @@ import java.util.stream.Collectors;
 @Service
 public class ProductoServiceImpl extends CrudGenericServiceImpl<Producto> implements IProductoService {
 
-    private static final String PATH_FOLDER = "/pedidos/img/productos";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductoServiceImpl.class);
+
+    @Autowired
+    Environment environment;
 
     @Autowired
     private IProductoRepo productoRepo;
@@ -34,12 +39,13 @@ public class ProductoServiceImpl extends CrudGenericServiceImpl<Producto> implem
 
     @Override
     public Mono<PageSupport<Producto>> findPageableProductos(Pageable page) {
+        LOGGER.info("Obteniendo lista de productos paginado");
         return productoRepo.findAll()
                 .collectList()
                 .map(list -> new PageSupport<>(
                             list.stream()
-                                    .skip(Long.valueOf(page.getPageNumber()*page.getPageSize()))
-                                    .limit(Long.valueOf(page.getPageSize()))
+                                    .skip((long)page.getPageNumber()*page.getPageSize())
+                                    .limit(page.getPageSize())
                                     .collect(Collectors.toList()),
                             page.getPageNumber(),
                             page.getPageSize(),
@@ -50,22 +56,24 @@ public class ProductoServiceImpl extends CrudGenericServiceImpl<Producto> implem
 
     @Override
     public JSONObject uploadImageToCloudinary(FilePart file) throws IOException {
+        LOGGER.info("Cargando imagen a Cloudinary");
         File f = Files.createTempFile("temp", file.filename()).toFile();
-        file.transferTo(f).block(); //se agrego "block", al ser un proceso bloqueante debo esperar que termine antes de usar el archivo
+        //se agrego "block", al ser un proceso bloqueante debo esperar que termine antes de usar el archivo
+        file.transferTo(f).block();
 
-        Map response= cloudinary.uploader().upload(f, ObjectUtils.asMap("folder", PATH_FOLDER));
-        JSONObject jsonResponse = new JSONObject(response);
+        Map<String, Object> response= cloudinary.uploader().upload(f, ObjectUtils.asMap("folder",
+                environment.getProperty("cloudinary.path.custom.folder")));
 
-        return jsonResponse;
+        return new JSONObject(response);
     }
 
     @Override
     public JSONObject deleteImageToCloudinary(String publicId) throws IOException {
-        Map deleteParams = ObjectUtils.asMap("invalidate", true );
-        Map response = cloudinary.uploader().destroy(publicId, deleteParams );
-        JSONObject jsonResponse = new JSONObject(response);
+        LOGGER.info("Eliminando imagen de Cloudinary");
+        Map<String, Object> deleteParams = ObjectUtils.asMap("invalidate", true );
+        Map<String, Object> response = cloudinary.uploader().destroy(publicId, deleteParams );
 
-        return jsonResponse;
+        return new JSONObject(response);
     }
 
     @Override
