@@ -72,6 +72,20 @@ public class ProductoController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/pageable/search-by-filters")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
+    public Mono<ResponseEntity<PageSupport<Producto>>> listProductsPageableByFilters
+            (@RequestParam(value = "size", defaultValue = "10") Integer size,
+             @RequestParam(value = "page", defaultValue = "0") Integer page,
+             @RequestParam(value = "nombre", defaultValue = "") String nombre,
+             @RequestParam(value = "tipo", defaultValue = "") String tipo) {
+        Pageable pageRequest = PageRequest.of(page, size);
+        LOGGER.info("nombre: {}", nombre);
+        return productoService.findPageableProductosByFilters(pageRequest, nombre, tipo)
+                .map(res -> new ResponseEntity<>(res, HttpStatus.OK))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping("/pageable")
     @PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
     public Mono<ResponseEntity<PageSupport<Producto>>> listProductsPageable

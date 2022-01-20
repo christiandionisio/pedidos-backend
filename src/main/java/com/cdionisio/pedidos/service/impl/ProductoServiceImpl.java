@@ -55,6 +55,23 @@ public class ProductoServiceImpl extends CrudGenericServiceImpl<Producto> implem
     }
 
     @Override
+    public Mono<PageSupport<Producto>> findPageableProductosByFilters(Pageable page, String nombre, String tipo) {
+        LOGGER.info("Obteniendo lista de productos por filtros");
+        return productoRepo.findByFieldFilters(nombre, tipo)
+                .collectList()
+                .map(list -> new PageSupport<>(
+                                list.stream()
+                                        .skip((long)page.getPageNumber()*page.getPageSize())
+                                        .limit(page.getPageSize())
+                                        .collect(Collectors.toList()),
+                                page.getPageNumber(),
+                                page.getPageSize(),
+                                list.size()
+                        )
+                );
+    }
+
+    @Override
     public JSONObject uploadImageToCloudinary(FilePart file) throws IOException {
         LOGGER.info("Cargando imagen a Cloudinary");
         File f = Files.createTempFile("temp", file.filename()).toFile();

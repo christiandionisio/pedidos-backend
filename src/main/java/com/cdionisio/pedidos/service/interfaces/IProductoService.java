@@ -8,10 +8,10 @@ import org.springframework.http.codec.multipart.FilePart;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.Map;
 
 public interface IProductoService extends ICrudGenericService<Producto>{
     Mono<PageSupport<Producto>> findPageableProductos(Pageable page);
+    Mono<PageSupport<Producto>> findPageableProductosByFilters(Pageable page, String nombre, String tipo);
     JSONObject uploadImageToCloudinary(FilePart file) throws IOException;
     JSONObject deleteImageToCloudinary(String publicId) throws IOException;
 }
