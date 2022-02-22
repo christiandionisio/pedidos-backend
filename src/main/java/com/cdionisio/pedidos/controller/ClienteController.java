@@ -2,7 +2,6 @@ package com.cdionisio.pedidos.controller;
 
 import com.cdionisio.pedidos.dtos.ClienteDTO;
 import com.cdionisio.pedidos.dtos.RegistroClienteDTO;
-import io.jsonwebtoken.ExpiredJwtException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
