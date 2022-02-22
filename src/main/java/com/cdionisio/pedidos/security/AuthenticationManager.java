@@ -1,6 +1,7 @@
 package com.cdionisio.pedidos.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,11 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.AuthenticationEntryPointFailureHandler;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +33,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
 
         return Mono.just(jwtUtil.validateToken(authToken))
                 .filter(valid -> valid)
-                .switchIfEmpty(Mono.empty())
+                .switchIfEmpty(Mono.error(new IOException()))
                 .map(valid -> {
                     Claims claims = jwtUtil.getAllClaimsFromToken(authToken);
                     List<String> rolesMap = claims.get("role", List.class);
