@@ -106,12 +106,4 @@ public class ClienteController {
 		return Mono.just(ResponseEntity.status(HttpStatus.CONFLICT).body(mapResponse));
 	}
 
-	@ExceptionHandler
-	public Mono<ResponseEntity<Map<String, Object>>> handleExpiredJwtException(ExpiredJwtException ex) {
-		LOGGER.error("Exception {}", ex.getMessage());
-		Map<String, Object> mapResponse = new HashMap<>();
-		mapResponse.put("mensaje", "Sesion expirada");
-		return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapResponse));
-	}
-
 }

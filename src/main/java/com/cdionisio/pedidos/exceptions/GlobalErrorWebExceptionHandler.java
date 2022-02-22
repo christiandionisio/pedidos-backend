@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -51,6 +52,7 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
         LOGGER.info("Init renderErrorResponse");
         Map<String, Object> errorGeneral = getErrorAttributes(request, ErrorAttributeOptions.defaults());
         Map<String, Object> mapException = new HashMap<>();
+        LOGGER.error(String.valueOf(getError(request)));
 
         HttpStatus httpStatus;
         String statusCode = String.valueOf(errorGeneral.get("status"));
@@ -58,10 +60,18 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
         switch (statusCode) {
             case "500":
                 LOGGER.info("Getting error response 500");
-                mapException.put(ERROR_KEY, statusCode);
-                mapException.put(EXCEPTION_KEY, "Error general del backend");
-                httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-                break;
+                if(getError(request) instanceof ExpiredJwtException) {
+                    mapException.put(ERROR_KEY, HttpStatus.UNAUTHORIZED.value());
+                    mapException.put(EXCEPTION_KEY, "Token expirado");
+                    httpStatus = HttpStatus.UNAUTHORIZED;
+                    break;
+                } else {
+                    mapException.put(ERROR_KEY, statusCode);
+                    mapException.put(EXCEPTION_KEY, "Error general del backend");
+                    httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+                    break;
+                }
+
             case "400":
                 LOGGER.info("Getting error response 400");
                 mapException.put(ERROR_KEY, statusCode);
