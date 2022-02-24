@@ -2,12 +2,15 @@ package com.cdionisio.pedidos.controller;
 
 import com.cdionisio.pedidos.dtos.ClienteDTO;
 import com.cdionisio.pedidos.dtos.RegistroClienteDTO;
+import com.cdionisio.pedidos.pagination.PageSupport;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +97,18 @@ public class ClienteController {
 				.flatMap(res -> service.delete(res.getId())
 								.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
 				)
+				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
+
+	@GetMapping("/pageable")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
+	public Mono<ResponseEntity<PageSupport<Cliente>>> listClientesPageable
+			(@RequestParam(value = "size", defaultValue = "10") Integer size,
+			 @RequestParam(value = "page", defaultValue = "0") Integer page) {
+		LOGGER.info("Init listClientesPageable");
+		Pageable pageRequest = PageRequest.of(page, size);
+		return service.findPageableClientes(pageRequest)
+				.map(res -> new ResponseEntity<>(res, HttpStatus.OK))
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
