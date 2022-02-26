@@ -102,7 +102,7 @@ public class ClienteController {
 
 	@GetMapping("/pageable")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
-	public Mono<ResponseEntity<PageSupport<Cliente>>> listClientesPageable
+	public Mono<ResponseEntity<PageSupport<ClienteDTO>>> listClientesPageable
 			(@RequestParam(value = "size", defaultValue = "10") Integer size,
 			 @RequestParam(value = "page", defaultValue = "0") Integer page) {
 		LOGGER.info("Init listClientesPageable");
@@ -114,15 +114,17 @@ public class ClienteController {
 
 	@GetMapping("/pageable/search-by-filters")
 	@PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
-	public Mono<ResponseEntity<PageSupport<Cliente>>> listClientesPageableByFilters
+	public Mono<ResponseEntity<PageSupport<ClienteDTO>>> listClientesPageableByFilters
 			(@RequestParam(value = "size", defaultValue = "10") Integer size,
 			 @RequestParam(value = "page", defaultValue = "0") Integer page,
 			 @RequestParam(value = "dni", defaultValue = "") String dni,
 			 @RequestParam(value = "nombres", defaultValue = "") String nombres,
-			 @RequestParam(value = "apellidos", defaultValue = "") String apellidos) {
+			 @RequestParam(value = "apellidos", defaultValue = "") String apellidos,
+			 @RequestParam(value = "correo", defaultValue = "") String correo) {
+
+		LOGGER.info("Init listClientesPageableByFilters");
 		Pageable pageRequest = PageRequest.of(page, size);
-		LOGGER.info("nombres: {}", nombres);
-		return service.findPageableClientesByFilters(pageRequest, dni, nombres, apellidos)
+		return service.findPageableClientesByFilters(pageRequest, dni, nombres, apellidos, correo)
 				.map(res -> new ResponseEntity<>(res, HttpStatus.OK))
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}

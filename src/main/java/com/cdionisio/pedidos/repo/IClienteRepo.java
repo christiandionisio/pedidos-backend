@@ -13,7 +13,8 @@ public interface IClienteRepo extends IGenericRepo<Cliente> {
 
     @Query("{ $and: [ { 'dni' : { $regex: ?0, $options:'i' } }, " +
             "{ 'nombres' : { $regex: ?1, $options:'i' } }, " +
-            "{ 'apellidos' : { $regex: ?2, $options:'i' } } ] }")
-    Flux<Cliente> findByFieldFilters(String dni, String nombres, String apellidos);
+            "{ 'apellidos' : { $regex: ?2, $options:'i' } }," +
+            "{ 'correo' : { $regex: ?3, $options:'i' } } ] }")
+    Flux<Cliente> findByFieldFilters(String dni, String nombres, String apellidos, String correo);
 
 }
