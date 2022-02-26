@@ -112,6 +112,21 @@ public class ClienteController {
 				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
+	@GetMapping("/pageable/search-by-filters")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('CAJERO')")
+	public Mono<ResponseEntity<PageSupport<Cliente>>> listClientesPageableByFilters
+			(@RequestParam(value = "size", defaultValue = "10") Integer size,
+			 @RequestParam(value = "page", defaultValue = "0") Integer page,
+			 @RequestParam(value = "dni", defaultValue = "") String dni,
+			 @RequestParam(value = "nombres", defaultValue = "") String nombres,
+			 @RequestParam(value = "apellidos", defaultValue = "") String apellidos) {
+		Pageable pageRequest = PageRequest.of(page, size);
+		LOGGER.info("nombres: {}", nombres);
+		return service.findPageableClientesByFilters(pageRequest, dni, nombres, apellidos)
+				.map(res -> new ResponseEntity<>(res, HttpStatus.OK))
+				.defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
+
 	@ExceptionHandler
 	public Mono<ResponseEntity<Map<String, Object>>> handleDuplicateKeyException(DuplicateKeyException ex) {
 		LOGGER.error("Exception {}", ex.getMessage());

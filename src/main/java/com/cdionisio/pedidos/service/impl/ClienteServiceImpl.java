@@ -59,4 +59,23 @@ public class ClienteServiceImpl extends CrudGenericServiceImpl<Cliente> implemen
 						)
 				);
 	}
+
+	@Override
+	public Mono<PageSupport<Cliente>> findPageableClientesByFilters(Pageable page, String dni,
+																	String nombres, String apellidos) {
+
+		LOGGER.info("Obteniendo lista de clientes paginado por filtros");
+		return repo.findByFieldFilters(dni, nombres, apellidos)
+				.collectList()
+				.map(list -> new PageSupport<>(
+								list.stream()
+										.skip((long)page.getPageNumber()*page.getPageSize())
+										.limit(page.getPageSize())
+										.collect(Collectors.toList()),
+								page.getPageNumber(),
+								page.getPageSize(),
+								list.size()
+						)
+				);
+	}
 }

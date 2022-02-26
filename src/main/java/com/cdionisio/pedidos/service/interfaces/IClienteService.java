@@ -10,5 +10,6 @@ public interface IClienteService extends ICrudGenericService<Cliente>{
 
     Mono<User> buscarPorCorreo(String correo);
     Mono<PageSupport<Cliente>> findPageableClientes(Pageable page);
+    Mono<PageSupport<Cliente>> findPageableClientesByFilters(Pageable page, String dni, String nombres, String apellidos);
 
 }
