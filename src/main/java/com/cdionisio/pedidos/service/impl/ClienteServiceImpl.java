@@ -42,10 +42,10 @@ public class ClienteServiceImpl extends CrudGenericServiceImpl<Cliente> implemen
 	public Mono<User> buscarPorCorreo(String correo) {
 		Mono<Cliente> monoCliente = repo.buscarPorCorreo(correo);
 
-		List<Role> roles = new ArrayList<Role>();
+		List<Role> roles = new ArrayList<>();
 		roles.add(Role.ROLE_USER);
 
-		return monoCliente.flatMap(u -> Mono.just(new User(u.getCorreo(), u.getPassword(), true, roles)));
+		return monoCliente.flatMap(u -> Mono.just(new User(u.getId(), u.getPassword(), true, roles)));
 	}
 
 	@Override

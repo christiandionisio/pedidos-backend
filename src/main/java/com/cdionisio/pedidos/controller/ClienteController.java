@@ -50,9 +50,9 @@ public class ClienteController {
 				.contentType(MediaType.APPLICATION_JSON)
 				.body(fluxClientes));
 	}
-	
+
 	@GetMapping("/{id}")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("principal.equals(#id)")
 	public Mono<ResponseEntity<ClienteDTO>> getById(@PathVariable String id) {
 		LOGGER.info("Init getById");
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
