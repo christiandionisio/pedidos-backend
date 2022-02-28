@@ -41,7 +41,9 @@ public class AuthController {
                         String token = jwtUtil.generateToken(userDetails);
                         Date expiracion = jwtUtil.getExpirationDateFromToken(token);
 
-                        return ResponseEntity.ok(new AuthResponse(token, expiracion));
+                        return ResponseEntity.ok()
+                                .header("access_token", token)
+                                .body(new AuthResponse(token, expiracion));
                     }else {
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorLogin("credenciales incorrectas", new Date()));
                     }
@@ -71,7 +73,9 @@ public class AuthController {
                         String token = jwtUtil.generateToken(userDetails);
                         Date expiracion = jwtUtil.getExpirationDateFromToken(token);
 
-                        return ResponseEntity.ok(new AuthResponse(token, expiracion));
+                        return ResponseEntity.ok()
+                                .header("access_token", token)
+                                .body(new AuthResponse(token, expiracion));
                     }else {
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorLogin("credenciales incorrectas", new Date()));
                     }
