@@ -38,6 +38,13 @@ public class DireccionController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/idcliente/{idCliente}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    public Mono<ResponseEntity<Flux<Direccion>>> getDireccionByIdCliente(@PathVariable String idCliente) {
+        LOGGER.info("getDireccionByIdCliente Init");
+        return Mono.just(ResponseEntity.ok(service.getByIdCliente(idCliente)));
+    }
+
     @PostMapping
     public Mono<ResponseEntity<Void>> insertDireccion(@Valid @RequestBody Direccion direccion) {
         return service.insert(direccion)
