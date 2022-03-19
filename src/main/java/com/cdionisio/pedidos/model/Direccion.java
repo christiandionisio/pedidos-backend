@@ -19,6 +19,15 @@ public class Direccion {
     @Field(name = "idDistrito")
     private String idDistrito;
 
+    @Field(name = "distrito")
+    private String distrito;
+
+    @Field(name = "provincia")
+    private String provincia;
+
+    @Field(name = "departamento")
+    private String departamento;
+
     @Field(name = "nombre")
     private String nombre;
 
@@ -151,5 +160,29 @@ public class Direccion {
 
     public void setReferencia(String referencia) {
         this.referencia = referencia;
+    }
+
+    public String getDistrito() {
+        return distrito;
+    }
+
+    public void setDistrito(String distrito) {
+        this.distrito = distrito;
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia;
+    }
+
+    public String getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(String departamento) {
+        this.departamento = departamento;
     }
 }
