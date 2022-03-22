@@ -52,7 +52,7 @@ public class ClienteController {
 	}
 
 	@GetMapping("/{id}")
-	@PreAuthorize("principal.equals(#id)")
+	@PreAuthorize("principal.equals(#id) or hasRole('ADMIN')")
 	public Mono<ResponseEntity<ClienteDTO>> getById(@PathVariable String id) {
 		LOGGER.info("Init getById");
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
