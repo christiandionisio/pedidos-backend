@@ -6,7 +6,7 @@ import reactor.core.publisher.Flux;
 
 public interface IDistritoRepo extends IGenericRepo<Distrito> {
 
-    @Query("{'idProvinicia' : ?0 }")
+    @Query("{'idProvincia' : ?0 }")
     Flux<Distrito> obtenerPorIdProvinicia(String idProvincia);
 
 }

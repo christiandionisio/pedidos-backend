@@ -37,9 +37,9 @@ public class DistritoController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/byIdDepartamento/{id}")
+    @GetMapping("/byIdProvincia/{id}")
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    public Mono<ResponseEntity<Flux<Distrito>>> getDistritoByIdDepartamento(@PathVariable String id) {
+    public Mono<ResponseEntity<Flux<Distrito>>> getDistritoByIdProvincia(@PathVariable String id) {
         return Mono.just(ResponseEntity.ok(service.findByIdProvincia(id)));
     }
 
