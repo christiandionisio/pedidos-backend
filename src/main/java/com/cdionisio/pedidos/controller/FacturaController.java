@@ -5,6 +5,7 @@ import com.cdionisio.pedidos.service.interfaces.IFacturaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,9 +40,14 @@ public class FacturaController {
 
     @PostMapping
     public Mono<ResponseEntity<Void>> insertProduct(@Valid @RequestBody Factura factura) {
+        LOGGER.info("Inserting new factura: {}", factura);
         factura.setFechaEmision(LocalDate.now().toString());
         return facturaService.insert(factura)
-                .flatMap(res -> Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
+                .flatMap(res -> {
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.add("factura-id", res.getId());
+                    return Mono.just(new ResponseEntity<Void>(headers, HttpStatus.NO_CONTENT));
+                })
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
