@@ -45,7 +45,7 @@ public class FacturaController {
         return facturaService.insert(factura)
                 .flatMap(res -> {
                     HttpHeaders headers = new HttpHeaders();
-                    headers.add("factura-id", res.getId());
+                    headers.add("facturaid", res.getId());
                     return Mono.just(new ResponseEntity<Void>(headers, HttpStatus.NO_CONTENT));
                 })
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
