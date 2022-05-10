@@ -14,7 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/facturas")
@@ -41,7 +41,7 @@ public class FacturaController {
     @PostMapping
     public Mono<ResponseEntity<Void>> insertProduct(@Valid @RequestBody Factura factura) {
         LOGGER.info("Inserting new factura: {}", factura);
-        factura.setFechaEmision(LocalDate.now().toString());
+        factura.setFechaEmision(LocalDateTime.now().toString());
         return facturaService.insert(factura)
                 .flatMap(res -> {
                     HttpHeaders headers = new HttpHeaders();
