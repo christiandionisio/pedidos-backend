@@ -68,4 +68,10 @@ public class FacturaController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/filters")
+    public Mono<ResponseEntity<Flux<Factura>>> getFacturasByFilters(@RequestParam(value = "estado", defaultValue = "") String estado,
+                                                              @RequestParam(value = "fecha", defaultValue = "") String fecha) {
+        return Mono.just(ResponseEntity.ok(facturaService.findFacturasByFilters(estado, fecha)));
+    }
+
 }
