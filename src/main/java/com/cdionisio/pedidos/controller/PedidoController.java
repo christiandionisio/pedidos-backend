@@ -37,6 +37,11 @@ public class PedidoController {
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/getByIdFactura/{id}")
+    public Mono<ResponseEntity<Flux<Pedido>>> getPedidoByIdFactura(@PathVariable String id) {
+        return Mono.just(ResponseEntity.ok(pedidoService.buscarPorFacturaId(id)));
+    }
+
     @PostMapping
     public Mono<ResponseEntity<Void>> insertProduct(@Valid @RequestBody Pedido pedido) {
         pedido.setFechaPedido(LocalDate.now().toString());
